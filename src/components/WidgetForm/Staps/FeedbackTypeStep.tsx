@@ -5,6 +5,7 @@ interface FeedbackTypeStepProps {
     onFeedbackTypeChanged: (type: FeedbackType) => void
 }
 
+//COMPONENTE P/ SELECIONAR O TIPO DE FEEDBACK (BUG, IDEA, OTHER)
 export function FeedbackTypeStep({onFeedbackTypeChanged}: FeedbackTypeStepProps){
     return (
         <>

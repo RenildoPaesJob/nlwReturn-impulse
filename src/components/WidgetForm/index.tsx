@@ -6,6 +6,7 @@ import bugImageUrl from "../../assets/bug.svg";
 import ideaImageUrl from "../../assets/ideia.svg";
 import otherImageUrl from "../../assets/thought.svg";
 import { FeedbackContentStep } from "./Staps/FeedbackContentStep";
+import { FeedbackSuccessStep } from "./Staps/FeedbackSuccessStep";
 
 export const feedbackTypes = {
     BUG: {
@@ -42,26 +43,37 @@ export const feedbackTypes = {
 
 export type FeedbackType = keyof typeof feedbackTypes
 
+//INDEX DA APLICAÇÃO COM TODOS OS COMPONENTES
 export function WidgetForm(){
 
     const [feedbackType, setFeedbackType] = useState<FeedbackType | null>(null)
+    const [feedbackSent, setFeedbackSent] = useState(false)
 
     function handleRestartFeedback(){
+        setFeedbackSent(false)
         setFeedbackType(null)
     }
 
     return (
         <div className="bg-zinc-900 p-4 relative rounded-2xl mb-4 flex flex-col items-center shadow-lg w-[calc(100vw-2rem)] md:w-auto">
-            
-            {/* SE NÃO HOUVER FEEDBACK SELECIONADO ELE MOSTRA O COMPONENTE A SEGUIR */}
-            {!feedbackType ? (
-                <FeedbackTypeStep onFeedbackTypeChanged={setFeedbackType}/>
-            ) : (
-                //SE NÃO ELE MOSTRA ESTE
-                <FeedbackContentStep 
-                    feedbackType={feedbackType}
-                    onFeedbackRestartRequest={handleRestartFeedback}
-                />
+            {/* SE O FEEDBACK JA FOI ENVIADO ELE MOSTRA O COMPONENTE A SEGUIR */}
+            {feedbackSent ? (
+                <FeedbackSuccessStep onFeedbackRestartRequest={handleRestartFeedback} />
+            ): (
+                // SE NÃO
+                <>
+                    {/* SE NÃO HOUVER FEEDBACK SELECIONADO ELE MOSTRA O COMPONENTE A SEGUIR */}
+                    {!feedbackType ? (
+                        <FeedbackTypeStep onFeedbackTypeChanged={setFeedbackType}/>
+                    ) : (
+                        //SE NÃO ELE MOSTRA ESTE
+                        <FeedbackContentStep 
+                            feedbackType={feedbackType}
+                            onFeedbackRestartRequest={handleRestartFeedback}
+                            onFeedbackSent={() => setFeedbackSent(true)}
+                        />
+                    )}
+                </>
             )}
 
             <footer className="text-xs text-neutral-400">
